@@ -23,6 +23,11 @@ export default function Textform(props) {
     let newText3=text.replace(text,"Hello Buddy");
     setText(newText3);
   }
+  const Oncopy=()=>
+  {
+    navigator.clipboard.writeText(text);
+    props.toggleAlert("Copied to clipboard","success");
+  }
   const [text, setText] = useState("");
   // text="dhaksdlflskhkfd"  //Wrong way to update it.
   // setText("New Text");      
@@ -33,16 +38,17 @@ export default function Textform(props) {
       <div className="mb-3">
         <textarea className={`form-control `} value={text}  onChange={handleOnchange} id="exampleFormControlTextarea1" rows="8"></textarea>
       </div>
-      <button className="btn btn-primary" onClick={handleOnclick}>Convert to UpperCase</button>
-      <button className="btn btn-secondary mx-4" onClick={handleClick}>Convert to LowerCase</button>
-      <button className="btn btn-primary mx-4" onClick={handle}>Replace</button>
+      <button disabled={text.length===0} className="btn btn-primary mx-2 my-1" onClick={handleOnclick}>Convert to UpperCase</button>
+      <button disabled={text.length===0} className="btn btn-secondary mx-2 my-1" onClick={handleClick}>Convert to LowerCase</button>
+      <button disabled={text.length===0} className="btn btn-primary mx-2 my-1" onClick={handle}>Replace</button>
+      <button disabled={text.length===0} className="btn btn-primary mx-2 my-1" onClick={Oncopy}>Copy to Clipboard</button>
     </div>
     <div className={`container my-4 text-${props.color}`}>
       <h3>Your Text Summary</h3>
-      <p>{text.split(" ").length} Words and {text.length} Characters </p>
-      <p>{0.008 * text.split(" ").length} Minutes Reqiured to Read. </p>
+      <p>{text.split(/\s/).filter((element)=>{return element.length!==0}).length} Words and {text.length} Characters </p>
+      <p>{0.008 * text.split(/\s/).filter((element)=>{return element.length!==0}).length} Minutes Reqiured to Read. </p>
       <h3>Preview</h3>
-      <p>{text.length>0?text:"Write Something in the above textbox to preview it here."}</p>
+      <p>{text.length>0?text:"Nothing to preview."}</p>
     </div>
     </>
   )
